@@ -61,8 +61,8 @@ FROM gcp-base
 
 # MongoCrypt
 ARG UBUNTU_VERSION=focal
-ARG LIBMONGOCRYPT_VERSION=1.5
-ARG MONGODB_ENTERPRISE_VERSION=6.0
+ARG LIBMONGOCRYPT_VERSION=1.8
+ARG MONGODB_ENTERPRISE_VERSION=7.0
 
 RUN sh -c 'curl -s --location https://www.mongodb.org/static/pgp/libmongocrypt.asc | gpg --dearmor >/etc/apt/trusted.gpg.d/libmongocrypt.gpg'
 RUN echo "deb https://libmongocrypt.s3.amazonaws.com/apt/ubuntu ${UBUNTU_VERSION}/libmongocrypt/${LIBMONGOCRYPT_VERSION} universe" | tee /etc/apt/sources.list.d/libmongocrypt.list
