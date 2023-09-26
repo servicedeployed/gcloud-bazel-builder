@@ -80,7 +80,7 @@ RUN apt-get install -y kubectl
 RUN kubectl version --client
 
 # Golang
-ARG GO_VERSION="1.18.2"
+ARG GO_VERSION="1.2.1"
 ARG ARCH="amd64"
 
 RUN wget -c "https://golang.org/dl/go${GO_VERSION}.linux-${ARCH}.tar.gz" -O - | tar -xz -C /usr/local
