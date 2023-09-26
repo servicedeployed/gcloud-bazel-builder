@@ -61,14 +61,16 @@ FROM gcp-base
 
 # MongoCrypt
 ARG UBUNTU_VERSION=focal
+ARG LIBMONGOCRYPT_VERSION=1.5
+ARG MONGODB_ENTERPRISE_VERSION=6.0
 
 RUN sh -c 'curl -s --location https://www.mongodb.org/static/pgp/libmongocrypt.asc | gpg --dearmor >/etc/apt/trusted.gpg.d/libmongocrypt.gpg'
-RUN echo "deb https://libmongocrypt.s3.amazonaws.com/apt/ubuntu ${UBUNTU_VERSION}/libmongocrypt/1.3 universe" | tee /etc/apt/sources.list.d/libmongocrypt.list
+RUN echo "deb https://libmongocrypt.s3.amazonaws.com/apt/ubuntu ${UBUNTU_VERSION}/libmongocrypt/${LIBMONGOCRYPT_VERSION} universe" | tee /etc/apt/sources.list.d/libmongocrypt.list
 RUN apt-get update -y
-RUN apt-get install -y libmongocrypt-dev wget
+RUN apt-get install -y libmongocrypt-dev wget libbson-dev
 RUN ldconfig
-RUN wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
-RUN echo "deb http://repo.mongodb.com/apt/ubuntu ${UBUNTU_VERSION}/mongodb-enterprise/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-enterprise.list
+RUN wget -qO - https://www.mongodb.org/static/pgp/server-${MONGODB_ENTERPRISE_VERSION}.asc | apt-key add -
+RUN echo "deb http://repo.mongodb.com/apt/ubuntu ${UBUNTU_VERSION}/mongodb-enterprise/${MONGODB_ENTERPRISE_VERSION} multiverse" | tee /etc/apt/sources.list.d/mongodb-enterprise.list
 RUN apt-get update -y
 RUN apt-get install -y mongodb-enterprise-cryptd pkg-config
 
@@ -80,7 +82,7 @@ RUN apt-get install -y kubectl
 RUN kubectl version --client
 
 # Golang
-ARG GO_VERSION="1.2.1"
+ARG GO_VERSION="1.21.1"
 ARG ARCH="amd64"
 
 RUN wget -c "https://golang.org/dl/go${GO_VERSION}.linux-${ARCH}.tar.gz" -O - | tar -xz -C /usr/local
